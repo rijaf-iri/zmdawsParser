@@ -3,12 +3,15 @@ get.campbell.data <- function(conn, dirAWS, dirUP = NULL, upload = TRUE){
     tz <- Sys.getenv("TZ")
     origin <- "1970-01-01"
 
-    awsLOG <- file.path(dirAWS, "AWS_DATA", "LOG", "CAMPBELL", "AWS_LOG.txt")
     awsFile <- file.path(dirAWS, "AWS_DATA", "CSV", "campbell_aws_list.csv")
     varFile <- file.path(dirAWS, "AWS_DATA", "CSV", "campbell_parameters_table.csv")
     dirOUT <- file.path(dirAWS, "AWS_DATA", "DATA", "CAMPBELL")
     if(!dir.exists(dirOUT))
         dir.create(dirOUT, showWarnings = FALSE, recursive = TRUE)
+    dirLOG <- file.path(dirAWS, "AWS_DATA", "LOG", "CAMPBELL")
+    if(!dir.exists(dirLOG))
+        dir.create(dirLOG, showWarnings = FALSE, recursive = TRUE)
+    awsLOG <- file.path(dirLOG, "AWS_LOG.txt")
 
     if(upload){
         ssh <- readRDS(file.path(dirAWS, "AWS_DATA", "AUTH", "adt.cred"))
@@ -41,6 +44,7 @@ get.campbell.data <- function(conn, dirAWS, dirUP = NULL, upload = TRUE){
         if(inherits(qres, "try-error")){
             msg <- paste("Unable to get data for", awsID[j])
             format.out.msg(msg, awsLOG)
+            next
         }
         if(nrow(qres) == 0) next
         out <- parse.campbell.data(qres, awsID[j], varTable)

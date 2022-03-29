@@ -1,5 +1,7 @@
 
-Sys.setenv(TZ = "Africa/Lusaka")
+.onLoad <- function(libname, pkgname){
+    Sys.setenv(TZ = "Africa/Lusaka")
+}
 
 getObsId <- function(qres){
     paste(qres$network, qres$id, qres$height,

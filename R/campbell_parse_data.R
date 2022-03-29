@@ -9,7 +9,7 @@ parse.campbell.data <- function(qres, awsID, varTable){
     if(nrow(qres) == 0) return(NULL)
 
     temps <- temps[!ina]
-    # temps <- round(temps, units = "mins")
+    # temps <- round.POSIXt(temps, units = "mins")
 
     tmp <- qres[, names(qres) %in% varTable$parameter_code, drop = FALSE]
     nom_col <- names(tmp)
